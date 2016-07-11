@@ -120,3 +120,8 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+# libtcod
+.a
+.dylib
+.cfg
