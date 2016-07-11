@@ -65,7 +65,7 @@ libtcod.sys_set_fps(LIMIT_FPS)
 con = libtcod.console_new(SCREEN_WIDTH, SCREEN_HEIGHT)
 
 # 플레이어를 표현하는 객체를 생성한다
-player = Object(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, '@' libtcod.white)
+player = Object(SCREEN_WIDTH/2, SCREEN_HEIGHT/2, '@', libtcod.white)
 
 # NPC를 생성한다
 npc = Object(SCREEN_WIDTH/2 - 5, SCREEN_HEIGHT/2, '@', libtcod. yellow)

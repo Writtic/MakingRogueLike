@@ -7,7 +7,23 @@ import libtcodpy as libtcod
 SCREEN_WIDTH = 80
 SCREEN_HEIGHT = 50
 
+# 맵 크기
+MAP_WIDTH = 80
+MAP_HEIGHT = 45
+
 LIMIT_FPS = 20 # 20 프레임이 최고
+
+color_dark_wall = libtcod.Color(0, 0, 100)
+color_dark_ground = libtcod.Color(50, 50, 150)
+
+class Tile:
+    # 맵의 타일과 값
+    def __init__(self, blocked, block_sight = None):
+        self.blocked = blocked
+
+        # 기본적으로 타일이 막혀있으면 시야도 막는다
+        if block_sight is None: block_sight = blocked
+        self.block_sight = block_sight
 
 class Object:
     """
@@ -34,6 +50,39 @@ class Object:
     def clear(self):
         # 해당 객체가 표현하고 있는 캐릭터를 지운다
         libtcod.console_put_char(con, self.x, self.y, ' ', libtcod.BKGND_NONE)
+
+def make_map():
+    global map
+
+    # 막히지 않은 타일들로 맵을 채운다
+    map = [[ Tile(False) for y in range(MAP_HEIGHT) ] for x in range(MAP_WIDTH) ]
+
+    # 맵을 테스트하기위해 두 기둥을 위치시킨다
+    map[30][22].blocked = True
+    map[30][22].block_sight = True
+    map[30][22].blocked = True
+    map[30][22].block_sight = True
+
+def render_all():
+    global color_light_wall
+    global color_light_ground
+
+    # 모든 타일들에 대해 지나가게되면 그 배경색이 결정되도록 한다.
+    for y in range(MAP_HEIGHT):
+        for x in range(MAP_WIDTH):
+            wall = map[x][y].block_sight
+            if wall:
+                libtcod.console_set_char_background(con, x, y, color_dard_wall, libtcod.BKGND_SET)
+            else:
+                libtcod.console_set_char_background(con, x, y, color_dark_ground, libtcod.BKGND_SET)
+
+    # 리스트의 모든 객체를 그려준다
+    for object in objects:
+        object.draw()
+
+    # 루트 콘솔에 "con"의 내용물들을 블럭 전송(blit)한다
+    libtcod.console_blit(con, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0, 0)
+
 
 def handle_keys():
     global playerx, playery
